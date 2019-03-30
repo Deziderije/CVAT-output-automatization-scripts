@@ -58,42 +58,49 @@ def CompleteOutput(metaframes,PersonID,PersonFrames,PersonOcclusionStatus,Person
                 for data in perPersonoutput:
                     output.append(str(data))
     return output
+def main(arg):
+    xmlFile = str(arg)  
+    tree = ET.parse(xmlFile)
+    root = tree.getroot()       #
+    meta = root.find("meta")    #xml getting root and positioning
+    task = meta.find("task")    #
+    metaframes = task.find("size").text
 
-xmlFile = str(sys.argv[1])  
-tree = ET.parse(xmlFile)
-root = tree.getroot()       #
-meta = root.find("meta")    #xml getting root and positioning
-task = meta.find("task")    #
-metaframes = task.find("size").text
+    PersonID = [] #Contains all video sequence person IDs [Person1id,Person2id,...]
+    PersonFrames = [] #Contains all frames a certain person is in [[Person1 frames],[Person2 frames],...]
+    PersonBoxes = [] #Contains all boxes a certain person is in [[Person 1 boxes], [Person2 boxes],...] where [Person box] --> [[Box in a frame],[Box in a frame]] where [Box in a frame] --> [xtl,ytl,xbr,ybr] 
+    PersonOcclusionStatus = [] #ContainsOcclusion status, 0 if visible, 1 if occluded; not used
 
-PersonID = [] #Contains all video sequence person IDs [Person1id,Person2id,...]
-PersonFrames = [] #Contains all frames a certain person is in [[Person1 frames],[Person2 frames],...]
-PersonBoxes = [] #Contains all boxes a certain person is in [[Person 1 boxes], [Person2 boxes],...] where [Person box] --> [[Box in a frame],[Box in a frame]] where [Box in a frame] --> [xtl,ytl,xbr,ybr] 
-PersonOcclusionStatus = [] #ContainsOcclusion status, 0 if visible, 1 if occluded; not used
+    for track in root.findall('track'):
+        PersonID.append(track.attrib['id'])
+        Frames = [] 
+        boxesByFrame = []                                                           # Gets values from .xml  
+        box, Xtl, Ytl, Xbr, Ybr = ([] for i in range(5))                            # assigns them to lists declared in previous chunk
+        occlusionstatus = []                                                        # all in order of personID appearance in .xml
+        for box in track.findall('box'):
+            Frames.append(box.attrib['frame'])
+            occlusionstatus.append(box.attrib['occluded'])
+            Xtl=(box.attrib['xtl'])
+            Ytl=(box.attrib['ytl'])
+            Xbr=(box.attrib['xbr'])
+            Ybr=(box.attrib['ybr'])
+            boxesByFrame.append([Xtl,Ytl,Xbr,Ybr])
+        PersonFrames.append(Frames)
+        PersonBoxes.append(boxesByFrame) 
+        PersonOcclusionStatus.append(occlusionstatus)
 
-for track in root.findall('track'):
-    PersonID.append(track.attrib['id'])
-    Frames = [] 
-    boxesByFrame = []                                                           # Gets values from .xml  
-    box, Xtl, Ytl, Xbr, Ybr = ([] for i in range(5))                            # assigns them to lists declared in previous chunk
-    occlusionstatus = []                                                        # all in order of personID appearance in .xml
-    for box in track.findall('box'):
-        Frames.append(box.attrib['frame'])
-        occlusionstatus.append(box.attrib['occluded'])
-        Xtl=(box.attrib['xtl'])
-        Ytl=(box.attrib['ytl'])
-        Xbr=(box.attrib['xbr'])
-        Ybr=(box.attrib['ybr'])
-        boxesByFrame.append([Xtl,Ytl,Xbr,Ybr])
-    PersonFrames.append(Frames)
-    PersonBoxes.append(boxesByFrame) 
-    PersonOcclusionStatus.append(occlusionstatus)
+    #### formats output for .txt file ####
+    outputname = xmlFile[0:-4] 
+    outputname += '_formattedOutput.txt'
+    f = open(outputname,"w")
+    outputlist = CompleteOutput(metaframes, PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes)
+    outputString = ' '.join(outputlist)    
+    print 'XML parsed to',outputname
+    f.write(outputString)
+    f.close()
 
-#### formats output for .txt file ####
-outputname = xmlFile[0:-4] 
-outputname += '_formattedOutput.txt'
-f = open(outputname,"w")
-outputlist = CompleteOutput(metaframes, PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes)
-outputString = ' '.join(outputlist)    
-print 'XML parsed to',outputname
-f.write(outputString)
+iterargs = iter(sys.argv)
+next(iterargs)              # skips first argumen due to the first arg being name of the script
+for arg in iterargs:        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    main(arg)               # repeats main depending on number of file arguments
+    print arg               # 
