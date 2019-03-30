@@ -1,0 +1,21 @@
+Command:
+    python xmlparser.py [file.xml]
+
+Dependencies:
+    xml (standard python library)
+    trebalo bi raditi jednako na windowsima (os nije koristen)
+------------------------------------------
+Uglavnom pretvara CVAT-ov output xml u oblik koji je zadan, a to je
+(broj frameova) (broj osoba u vs) | (broj tekuceg framea) (broj osoba u tekucem frameu) | (ID osobe) (Xtl) (Ytl) (Xbr) (Xbr)
+...ispisuje se odijeljeno samo razmacima
+------------------------------------------
+TODO: 
+    provjeriti tocnost pretvorbe u kljucnim trenucima (primjerzaprovjeru.txt)
+
+EDIT by Niksa:
+
+Descr:
+    Script added that converts all .xml files in current directory to given .txt format and dumps them into Txt_Format folder
+
+ToRun:
+    bash Auto.sh
