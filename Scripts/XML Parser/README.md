@@ -18,8 +18,7 @@ Uglavnom pretvara CVAT-ov output xml u oblik koji je zadan, a to je
 (broj frameova) (broj osoba u vs) | (broj tekuceg framea) (broj osoba u tekucem frameu) | (ID osobe) (Xtl) (Ytl) (Xbr) (Xbr)
 _Ispis je odijeljen samo razmacima, bez `(,|,)`_
 
-##
-    Auto.sh
+## Auto.sh
 ### Description
 Script added that converts all .xml files in current directory to given .txt format and dumps them into Txt_Format folder
 _niksa_
