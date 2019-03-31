@@ -5,7 +5,7 @@
     python xmlparser.py [--option] [file1.xml file2.xml ...]
     python xmlparser.py [--option] [*.xml...]  
 ### Dependencies:
-1* xml (standard python library)
+* xml (standard python library)
 _trebalo bi raditi jednako na windowsima (os nije koristen)_
 ### Options:
 `--video-export -` Outputs format used by PeopleDrawer.
