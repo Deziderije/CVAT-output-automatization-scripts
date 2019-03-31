@@ -97,7 +97,10 @@ def main(arg,flag):
 
     #### formats output for .txt file ####
     outputname = xmlFile[0:-4] 
-    outputname += '_formattedOutput.txt'
+    if flag=='video':
+        outputname += '_formattedVideoOutput.txt'
+    elif flag=='text':
+        outputname += '_formattedTextOutput.txt'
     f = open(outputname,"w")
     outputlist = CompleteOutput(metaframes, PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes,flag)
     outputString = ' '.join(outputlist)    
