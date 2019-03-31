@@ -40,7 +40,7 @@ def onePersonForAFrameOutput(PersonID,PersonFrames,PersonOcclusionStatus,current
         ybr=PersonBoxes[listID][currentFrameID][3]
         return [xtl,ytl,xbr,ybr]
 
-def CompleteOutput(metaframes,PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes): #return whole output in a list as ['string','string']
+def CompleteOutput(metaframes,PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes,flag): #return whole output in a list as ['string','string']
     output = []
     output.append(str(metaframes))
     output.append(str(NumberofPeopleinVS(PersonID)))
@@ -49,16 +49,22 @@ def CompleteOutput(metaframes,PersonID,PersonFrames,PersonOcclusionStatus,Person
 
 
     for i in range(0,noofframes):
+        if flag == 'video':
+            output.append('\n')
+            output.append('frameid')
         output.append(str(i))
         output.append(str(NumberofPeopleinCurrentFrame(PersonFrames,PersonOcclusionStatus,i)))
         for person in PersonID:
             if isInFrame(PersonID,PersonFrames,PersonOcclusionStatus,i,person)==True:
+                if flag == 'video':output.append('\nosoba')
                 output.append(str(person))
                 perPersonoutput = onePersonForAFrameOutput(PersonID,PersonFrames,PersonOcclusionStatus,i,person,PersonBoxes)
+                if flag == 'video':output.append('box')
                 for data in perPersonoutput:
                     output.append(str(data))
+    output.append('\n')
     return output
-def main(arg):
+def main(arg,flag):
     xmlFile = str(arg)  
     tree = ET.parse(xmlFile)
     root = tree.getroot()       #
@@ -93,14 +99,20 @@ def main(arg):
     outputname = xmlFile[0:-4] 
     outputname += '_formattedOutput.txt'
     f = open(outputname,"w")
-    outputlist = CompleteOutput(metaframes, PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes)
+    outputlist = CompleteOutput(metaframes, PersonID,PersonFrames,PersonOcclusionStatus,PersonBoxes,flag)
     outputString = ' '.join(outputlist)    
     print 'XML parsed to',outputname
     f.write(outputString)
     f.close()
 
+if str(sys.argv[1]) == '--video-export':
+    flag = 'video'
+elif str(sys.argv[1]) == '--text-export':
+    flag = 'text'
+else:
+    print 'Wrong input, look at README.txt'
 iterargs = iter(sys.argv)
+next(iterargs)
 next(iterargs)              # skips first argumen due to the first arg being name of the script
 for arg in iterargs:        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    main(arg)               # repeats main depending on number of file arguments
-    print arg               # 
+    main(arg,flag)               # repeats main depending on number of file arguments
