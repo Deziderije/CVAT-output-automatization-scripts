@@ -1,6 +1,6 @@
 Command:
     python xmlparser.py [--option] [file1.xml file2.xml ...]
-    python xmlparser.py [*.xml...]  
+    python xmlparser.py [--option] [*.xml...]  
 Dependencies:
     xml (standard python library)
     trebalo bi raditi jednako na windowsima (os nije koristen)
