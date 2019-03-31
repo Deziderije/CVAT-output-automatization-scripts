@@ -9,6 +9,7 @@
 _trebalo bi raditi jednako na windowsima (os nije koristen)_
 ### Options:
 `--video-export -` Outputs format used by PeopleDrawer.
+
 `--text-export -` Outputs standard text format.
 
 ### Description
