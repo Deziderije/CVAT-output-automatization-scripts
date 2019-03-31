@@ -5,13 +5,13 @@ import os
 colors = [(255, 0, 0),(255, 51, 204),(102, 0, 255),(51, 204, 255),(255, 153, 0),(179, 0, 179),(153, 204, 0),(102, 255, 204),(204, 102, 255),(204, 51, 153),(102, 255, 102),(51, 204, 51),(0, 255, 255),(230, 230, 0),(0, 119, 179),(255, 26, 255),(0, 51, 153),(117, 117, 163),(0, 136, 204),(153, 102, 51)]
 linewidth = 3
 def createEmptyFrames(TotalFrame,CurrentFrame,output):
-    
     howMany = int(TotalFrame) - int(CurrentFrame)
-    for i in range(howMany):
+    for i in range(howMany+1):
+        savename = ''
         im = Image.new('RGBA', (1920, 1080), (255,255,255,0))
         draw = ImageDraw.Draw(im)
-        output = output + str(int(CurrentFrame)+i) + '.png'
-        im.save(output,'PNG')
+        savename = output + str(int(CurrentFrame)+i) + '.png'
+        im.save(savename,'PNG')
         im.close()
 
 def drawRectangle(Xtl,Ytl,Xbr,Ybr,color):
@@ -47,6 +47,8 @@ with open(str(sys.argv[1])) as infofile:
             
         elif status==1:
             colorID = int(lineInList[1])-1   #-1 jer je lista boja od 0 a osobe od 1
+            if colorID >= 20:
+                colorID = colorID % 20
             xtl = float(lineInList[3])
             ytl = float(lineInList[4])
             xbr = float(lineInList[5])
