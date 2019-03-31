@@ -5,13 +5,11 @@
     python xmlparser.py [--option] [file1.xml file2.xml ...]
     python xmlparser.py [--option] [*.xml...]  
 ### Dependencies:
-    1* xml (standard python library)
-    _trebalo bi raditi jednako na windowsima (os nije koristen)_
+1* xml (standard python library)
+_trebalo bi raditi jednako na windowsima (os nije koristen)_
 ### Options:
-    `--video-export -` 
-                    Outputs format used by PeopleDrawer.
-    `--text-export -`
-                    Outputs standard text format.
+`--video-export -` Outputs format used by PeopleDrawer.
+`--text-export -` Outputs standard text format.
 
 ### Description
 Uglavnom pretvara CVAT-ov output xml u oblik koji je zadan, a to je
