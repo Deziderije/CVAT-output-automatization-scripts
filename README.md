@@ -1,2 +1,2 @@
-# seminarCV
-repo 4 CV seminar
+# CVAT output automatization scripts
+repo 
